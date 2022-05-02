@@ -20,6 +20,7 @@ const TextInput = styled.input`
   padding: 0.5rem 1.2rem;
   font-size: 1rem;
   width: 100%;
+  cursor: pointer;
 `;
 const Button = styled.button`
   border: none;

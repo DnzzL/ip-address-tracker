@@ -1,6 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { device } from "../../shared/constants";
+import useBreakpoint from "use-breakpoint";
+import { device, screenSize } from "../../shared/constants";
 import "./ResultCard.css";
 
 interface ResultCardProps {
@@ -17,12 +18,13 @@ const ResultCardWrapper = styled.div`
   border-radius: 10px;
   background-color: white;
   padding: 1.5rem 2rem;
-  min-height: 8rem;
+  min-height: 6rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
   @media ${device.tablet} {
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: flex-start;
     padding: 0.5rem 1rem;
   }
 `;
@@ -36,19 +38,9 @@ const CategoryResult = styled.div`
   gap: 0.5rem;
 
   @media ${device.tablet} {
-    text-align: left;
-
-    &:after {
-      content: "";
-      position: absolute;
-      border-left: 1px solid black;
-      right: -10px;
-      height: 80%;
-    }
-
-    &:last-child:after {
-      display: none;
-    }
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1.5rem;
   }
 `;
 
@@ -66,13 +58,31 @@ const CategoryValue = styled.p`
   font-weight: 500;
   color: var(--very-dark-gray);
   margin: 0;
+
+  @media ${device.tablet} {
+    font-size: 1.3rem;
+  }
+`;
+
+const CategorySeparator = styled.div`
+  display: inline-block;
+  border-left: 1px solid #ccc;
+  height: 3rem;
+  align-self: center;
 `;
 
 const ResultCard: FC<ResultCardProps> = (props) => {
+  const { minWidth } = useBreakpoint(screenSize);
+
   return (
     <ResultCardWrapper>
       {Object.entries(props.items).map(([key, value]) => (
         <>
+          {minWidth &&
+          minWidth > screenSize.mobileL &&
+          key !== Object.keys(props.items)[0] ? (
+            <CategorySeparator></CategorySeparator>
+          ) : null}
           <CategoryResult key={key}>
             <CategoryTitle>{key}</CategoryTitle>
             <CategoryValue>{value}</CategoryValue>
