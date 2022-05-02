@@ -1,11 +1,12 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import backgroundPattern from "../../assets/images/pattern-bg.png";
 import Input from "../../components/Input/Input";
 import Map from "../../components/Map/Map";
 import ResultCard from "../../components/ResultCard/ResultCard";
+import { device } from "../../shared/constants";
 import { IpifyResponse } from "../../shared/interfaces";
-import backgroundPattern from "../../assets/images/pattern-bg.png";
 import "./Tracker.css";
 
 interface TrackerProps {}
@@ -34,27 +35,43 @@ const TrackerTitle = styled.h1`
   font-weight: 500;
   color: white;
   position: absolute;
-  top: 0.5%;
+  top: 1vh;
+
+  @media ${device.tablet} {
+    top: 3vh;
+  }
 `;
 
 const InputWrapper = styled.div`
   max-height: 50px;
   position: absolute;
-  top: 6%;
+  top: 6vh;
   width: 90%;
   margin: 0 auto;
   padding: 1rem 1.5rem;
+
+  @media ${device.tablet} {
+    top: 10vh;
+    max-width: 30rem;
+  }
 `;
 
 const ResultCardWrapper = styled.div`
   padding: 0.5rem 1.5rem;
   position: absolute;
-  top: 15%;
+  top: 15vh;
   width: 90%;
+
+  @media ${device.tablet} {
+    max-width: 60rem;
+    top: 20vh;
+  }
 `;
 
 const Tracker: FC<TrackerProps> = () => {
   const IPIFY_URL = "https://geo.ipify.org/api/v2/country,city";
+  const inputPlaceholder = "Search for any IP address or domain";
+
   const [inputValue, setInputValue] = useState("");
   const [ip, setIP] = useState("");
   const [city, setCity] = useState("");
@@ -113,6 +130,7 @@ const Tracker: FC<TrackerProps> = () => {
       <TrackerTitle>IP Address Tracker</TrackerTitle>
       <InputWrapper>
         <Input
+          placeholder={inputPlaceholder}
           inputValue={inputValue}
           onInputChange={onInputChange}
           onClick={onClick}

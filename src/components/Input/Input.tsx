@@ -5,6 +5,7 @@ import iconArrow from "../../assets/images/icon-arrow.svg";
 
 interface InputProps {
   inputValue: string;
+  placeholder: string;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -16,8 +17,8 @@ const InputContainer = styled.div`
 const TextInput = styled.input`
   border: none;
   border-radius: 10px 0 0 10px;
-  padding: 0.5rem;
-  font-size: 1.2rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
   width: 100%;
 `;
 const Button = styled.button`
@@ -31,6 +32,7 @@ const Button = styled.button`
 const Input: FC<InputProps> = (props) => (
   <InputContainer>
     <TextInput
+      placeholder={props.placeholder}
       value={props.inputValue}
       onChange={props.onInputChange}
     ></TextInput>
