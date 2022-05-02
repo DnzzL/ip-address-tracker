@@ -1,8 +1,8 @@
 import L, { LatLngExpression } from "leaflet";
-import { FC, Ref, useMemo, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import "./Map.css";
+import { FC, useMemo, useState } from "react";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import locationIcon from "../../assets/images/icon-location.svg";
+import "./Map.css";
 
 interface MapProps {
   lat: number;

@@ -21,13 +21,14 @@ const TrackerWrapper = styled.div`
 `;
 
 const BackgroundWrapper = styled.div`
-  overflow: hidden;
   height: 30vh;
+  width: 100%;
   max-width: 100%;
-`;
+  background-image: url(${backgroundPattern});
 
-const BackgroundImage = styled.img`
-  height: 100%;
+  @media ${device.tablet} {
+    background-repeat: round;
+  }
 `;
 
 const TrackerTitle = styled.h1`
@@ -121,12 +122,7 @@ const Tracker: FC<TrackerProps> = () => {
 
   return (
     <TrackerWrapper>
-      <BackgroundWrapper>
-        <BackgroundImage
-          src={backgroundPattern}
-          alt="background pattern"
-        ></BackgroundImage>
-      </BackgroundWrapper>
+      <BackgroundWrapper></BackgroundWrapper>
       <TrackerTitle>IP Address Tracker</TrackerTitle>
       <InputWrapper>
         <Input
