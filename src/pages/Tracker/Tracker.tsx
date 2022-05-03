@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import backgroundPattern from "../../assets/images/pattern-bg.png";
@@ -6,7 +5,7 @@ import Input from "../../components/Input/Input";
 import Map from "../../components/Map/Map";
 import ResultCard from "../../components/ResultCard/ResultCard";
 import { device } from "../../shared/constants";
-import { IpifyResponse } from "../../shared/interfaces";
+import { useGeoLocation } from "../../shared/hooks";
 import "./Tracker.css";
 
 interface TrackerProps {}
@@ -70,42 +69,15 @@ const ResultCardWrapper = styled.div`
 `;
 
 const Tracker: FC<TrackerProps> = () => {
-  const IPIFY_URL = "https://geo.ipify.org/api/v2/country,city";
   const inputPlaceholder = "Search for any IP address or domain";
 
   const [inputValue, setInputValue] = useState("");
-  const [ip, setIP] = useState("");
-  const [city, setCity] = useState("");
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
-  const [timezone, setTimezone] = useState("");
-  const [isp, setIsp] = useState("");
   const [isFetching, setFetching] = useState(false);
-
-  const fetchGeolocationAPI = async (ipAddress: string = "") => {
-    try {
-      const params = ipAddress
-        ? { apiKey: `${process.env["REACT_APP_IPIFY_API_KEY"]}`, ipAddress }
-        : { apiKey: `${process.env["REACT_APP_IPIFY_API_KEY"]}` };
-      const response = (
-        await axios.get(IPIFY_URL, {
-          params,
-        })
-      ).data as IpifyResponse;
-      setIP(response.ip);
-      setCity(response.location.city);
-      setLat(response.location.lat);
-      setLng(response.location.lng);
-      setTimezone(response.location.timezone);
-      setIsp(response.isp);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const [geoLocation, fetchGeoLocationAPI] = useGeoLocation();
 
   useEffect(() => {
-    fetchGeolocationAPI();
-  }, [inputValue]);
+    fetchGeoLocationAPI();
+  }, [fetchGeoLocationAPI]);
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -116,7 +88,7 @@ const Tracker: FC<TrackerProps> = () => {
   ) => {
     e.preventDefault();
     setFetching(true);
-    await fetchGeolocationAPI(inputValue);
+    await fetchGeoLocationAPI(inputValue);
     setFetching(false);
   };
 
@@ -133,11 +105,20 @@ const Tracker: FC<TrackerProps> = () => {
         ></Input>
       </InputWrapper>
       <ResultCardWrapper>
-        <ResultCard
-          items={{ "ip address": ip, location: city, timezone, isp }}
-        ></ResultCard>
+        {geoLocation ? (
+          <ResultCard
+            items={{
+              "ip address": geoLocation.ip,
+              location: geoLocation.city,
+              timezone: geoLocation.timezone,
+              isp: geoLocation.isp,
+            }}
+          ></ResultCard>
+        ) : null}
       </ResultCardWrapper>
-      {lat && lng ? <Map lat={lat} lng={lng}></Map> : null}
+      {geoLocation ? (
+        <Map lat={geoLocation.lat} lng={geoLocation.lng}></Map>
+      ) : null}
     </TrackerWrapper>
   );
 };

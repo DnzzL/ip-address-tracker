@@ -24,3 +24,12 @@ export interface IpifyResponse {
   as: AutonomousSystem;
   isp: string;
 }
+
+export interface GeoLocType {
+  ip: string;
+  city: string;
+  lat: number;
+  lng: number;
+  timezone: string;
+  isp: string;
+}

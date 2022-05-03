@@ -20,6 +20,7 @@ const Map: FC<MapProps> = (props) => {
   }
 
   const displayMap = useMemo(() => {
+    console.log("render map");
     const markerIcon = L.icon({
       iconUrl: locationIcon,
       iconRetinaUrl: locationIcon,

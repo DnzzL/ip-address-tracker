@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import "./Input.css";
 import iconArrow from "../../assets/images/icon-arrow.svg";
+import "./Input.css";
 
 interface InputProps {
   inputValue: string;
